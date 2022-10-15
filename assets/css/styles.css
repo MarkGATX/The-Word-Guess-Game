@@ -1,0 +1,33 @@
+/* global */
+
+/* id */
+#secretWord {
+    list-style-type: none;
+}
+
+
+/* class */
+.active {
+    color: black
+}
+
+.selected {
+    color: grey;
+}
+
+
+
+.letters {
+    /* width:10%; */
+    flex-grow: 0;
+    font-size: 1.5rem
+}
+
+.gameLetters {
+    font-size: 3rem;
+    margin: 0 1rem;
+    transition: all 1s;
+    /* border-bottom:solid 3px black; */
+    width: 3rem;
+    text-align: center;
+}
