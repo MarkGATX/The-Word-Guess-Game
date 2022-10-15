@@ -66,12 +66,21 @@ function listenForLetters() {
                 console.log(key)
                 for (let i = 0; i< puzzleCharacters.length; i ++) {
                     puzzleCharacters[i].textContent=key;
+                    puzzleCharacters[i].setAttribute('data-found', 'found')
                 };   
             };
           }
-          checkWordWin = document.getElementsByClassName('gameletters');
-          for (i=0;i<checkWordWin.length; i++) {
-            if (checkWordWin.textContent === null || checkWordWin === "") {}
+          checkWordWin = document.querySelectorAll(`[data-found=found]`);
+          console.log(checkWordWin)
+          if (checkWordWin.length === currentWordLetters.length) {
+            endGameAndScore();
           }
+        //   for (i=0;i<checkWordWin.length; i++) {
+        //     if (checkWordWin[i].textContent !== null || checkWordWin[i] !== "") {}
+        //   }
     });
 }
+
+function endGameAndScore(){
+    console.log('ping')
+};
