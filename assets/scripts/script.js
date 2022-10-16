@@ -41,7 +41,7 @@ function startTimer() {
             timeLeft.innerText = secondsLeft;
         };
         if (secondsLeft < 25) {
-            timeLeft.classList.add("red");
+            timeLeft.classList.add("text-danger");
         };
         secondsLeft--;
         if (secondsLeft <= 0) {
@@ -116,6 +116,7 @@ function checkKeyValue(event) {
     key = event.key.toLowerCase();
     console.log(key)
     document.removeEventListener('keydown', checkKeyValue);
+    //check to see if pressed a letter
     var alphabetCharacters = 'abcdefghijklmnopqrstuvwxyz'.split('');
     if (alphabetCharacters.includes(key)) {
         let characterLog = document.querySelector(`[data-letter="${key}"]`)
@@ -126,6 +127,7 @@ function checkKeyValue(event) {
         // }
         puzzleCharacters = document.querySelectorAll(`[data-puzzle-letter=${key}]`);
         console.log(puzzleCharacters);
+        //if array of letter that match keypress isn't null, fill in
         if (puzzleCharacters !== null) {
             console.log(key)
             for (let i = 0; i < puzzleCharacters.length; i++) {
@@ -185,12 +187,12 @@ function scoreDisplayAndStorage() {
         console.log(highScoresLength)
         for (i = 0; i < highScoresLength; i++) {
             if (currentGameScore >= latestScores[i][1]) {
-                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label><div class="input-group justify-content-center"> <input type="text" name="initials" class="initials" maxlength="15"></input><button class="initialSubmit btn btn-outline-secondary">Submit</button></div>';
+                scoreSection.innerHTML = '<p class="letters">Your final score is: ' + currentGameScore + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label><div class="input-group justify-content-center"> <input type="text" name="initials" class="initials" maxlength="15"></input><button class="initialSubmit btn btn-outline-secondary">Submit</button></div>';
                 //add event listener for button
                 var hsSubmitButton = document.querySelector(".initialSubmit");
                 hsSubmitButton.addEventListener("click", logHighScores);
             } else {
-                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p><button class="playAgain btn btn-outline-secondary">Play again?</button>';
+                scoreSection.innerHTML = '<p class="letters">Your final score is: ' + currentGameScore + '.</p><button class="playAgain btn btn-outline-secondary">Play again?</button>';
                 let startAgain = document.querySelector(".playAgain");
                 startAgain.addEventListener("click", startOver);
             }
