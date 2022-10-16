@@ -1,21 +1,71 @@
+/* FONT STYLES */
+/* font-family: 'Anonymous Pro', monospace;
+font-family: 'Hind Madurai', sans-serif;
+font-family: 'Lora', serif; */
+
+/* variables */
+:root {
+    --dark:#2C3532;
+    --light:#FFCB9A;
+    --lightTeal:#D2E8E3;
+    --teal:#0F6466;
+    --brown:#D8B08C;
+}
+
 /* global */
+body {
+    font-family: 'Hind Madurai', sans-serif;
+    background-color:var(--light);
+    color:var(--dark);
+    
+}
+
+html {
+    overflow-x: hidden;;
+}
+
 
 
 
 /* id */
 #secretWord {
+    font-family: 'Anonymous Pro', monospace;
     list-style-type: none;
 }
 
 
 /* class */
 .active {
-    color: black;
-    
+    color: black;  
+}
+
+.btn {
+    font-family:'Lora', serif;
+    background-color:var(--dark);
+    color:var(--lightTeal);
+}
+
+.btn:hover {
+    background-color:var(--teal);
+}
+
+.correct {
+    animation: correct 1s cubic-bezier(0.47, 0, 0.745, 0.715);
+    color:var(--teal);
+}
+
+.headerbg {
+    color:var(--lightTeal);
+    background-color:var(--teal)
+}
+
+.scoreRow {
+    overflow-x: hidden;
+
 }
 
 .selected {
-    color: beige;
+    color: var(--lightTeal);
 }
 
 
@@ -44,6 +94,20 @@
 
 /* animations */
 @keyframes append {
+	from {
+		transform: scale(0);
+		opacity: 0;
+        
+    
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;	
+  
+	}
+}
+
+@keyframes correct {
 	from {
 		transform: scale(0);
 		opacity: 0;

@@ -95,8 +95,11 @@ function checkKeyValue(event) {
         if (puzzleCharacters !== null) {
             console.log(key)
             for (let i = 0; i < puzzleCharacters.length; i++) {
-                puzzleCharacters[i].textContent = key;
+               
                 puzzleCharacters[i].setAttribute('data-found', 'found')
+                
+                puzzleCharacters[i].textContent = key;
+                puzzleCharacters[i].classList.add('correct');
             };
         };
     }
@@ -152,7 +155,7 @@ function scoreDisplayAndStorage() {
                 var hsSubmitButton = document.querySelector(".initialSubmit");
                 hsSubmitButton.addEventListener("click", logHighScores);
             } else {
-                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p><button class="playAgain btn btn-outline-secondary">play Again?</button>';
+                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p><button class="playAgain btn btn-outline-secondary">Play again?</button>';
                 let startAgain = document.querySelector(".playAgain");
                 startAgain.addEventListener("click", startOver);
             }
@@ -162,7 +165,8 @@ function scoreDisplayAndStorage() {
 
 function logHighScores() {
     hsInitials = document.querySelector(".initials").value;
-    console.log(hsInitials)
+    console.log(hsInitials);
+    scoreSection.innerHTML = '<button class="playAgain btn btn-outline-secondary">Play again?</button>';
     var latestScores = JSON.parse(localStorage.getItem("wordGameSavedHighScores"));
     //Make sure no more than 10 entries in latest scores
     console.log(latestScores)
@@ -214,9 +218,9 @@ function buildHighScoresTable() {
     for (let i = 0; i < latestScores.length; i++) {
         let scoreRow = document.createElement('tr');
         scoreRow.innerHTML = `<td>${latestScores[i][0]}</td><td>${latestScores[i][1]}</td>`;
-        console.log(scoreRow)
-        hsTableBody.append(scoreRow);
+        hsTableBody.append(scoreRow);      
     }
+    
 }
 
 function startGame() {
