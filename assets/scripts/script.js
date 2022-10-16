@@ -11,38 +11,38 @@ let puzzleCharacters = [];
 let checkWordWin = [];
 let currentGameScore = 0;
 let scoreSection = document.querySelector('.currentScore')
+let hsTableBody = document.querySelector('tbody')
+
 
 //initialize score if needed
 latestScores = JSON.parse(localStorage.getItem('wordGameSavedHighScores'));
 // console.log(latestScores);
-// if (latestScores === [] || latestScores === null) {
-console.log(latestScores)    
-latestScores = [['',0]];
+if (latestScores === [] || latestScores === null) {
+    console.log(latestScores)
+    latestScores = [['', 0]];
     console.log(latestScores)
     localStorage.setItem('wordGameSavedHighScores', JSON.stringify(latestScores));
-// }
-
-console.log(scoreSection)
-
-
-//initialize local storage for words and used words
-possibleWords = JSON.parse(localStorage.getItem('possibleWordsSaved'));
-usedWords = JSON.parse(localStorage.getItem('usedWordsSaved'))
-//if possible word is empty, reset possible and used words
-console.log(possibleWords)
-if (possibleWords === null || possibleWords.length === 0) {
-    //failsafe to format object in local storage populate with full string
-    possibleWords = [];
-    localStorage.setItem('possibleWordsSaved', JSON.stringify(possibleWords));
-    possibleWords = wordSelection;
-    console.log(possibleWords)
-    localStorage.setItem('possibleWordsSaved', JSON.stringify(possibleWords));
-    //set used words local and saved to blank
-    usedWords = [];
-    localStorage.setItem('usedWordsSaved', JSON.stringify(usedWords))
 }
 
+
+
 const populateBlanks = new Promise(function (resolve, reject) {
+    //initialize local storage for words and used words
+    possibleWords = JSON.parse(localStorage.getItem('possibleWordsSaved'));
+    usedWords = JSON.parse(localStorage.getItem('usedWordsSaved'))
+    //if possible word is empty, reset possible and used words
+    console.log(possibleWords)
+    if (possibleWords === null || possibleWords.length === 0) {
+        //failsafe to format object in local storage populate with full string
+        possibleWords = [];
+        localStorage.setItem('possibleWordsSaved', JSON.stringify(possibleWords));
+        possibleWords = wordSelection;
+        console.log(possibleWords)
+        localStorage.setItem('possibleWordsSaved', JSON.stringify(possibleWords));
+        //set used words local and saved to blank
+        usedWords = [];
+        localStorage.setItem('usedWordsSaved', JSON.stringify(usedWords))
+    }
     console.log(wordSelection);
     let randomIndex = Math.floor(Math.random() * possibleWords.length)
     console.log(randomIndex)
@@ -112,6 +112,12 @@ function checkKeyValue(event) {
 
 function endGameAndScore() {
     //count number of unique letters in puzzle word
+    document.removeEventListener('keydown', checkKeyValue);
+    let finalWinAnimation = document.querySelectorAll('.gameLetters');
+    console.log(finalWinAnimation)
+    for (let i = 0; i < finalWinAnimation.length; i++) {
+        finalWinAnimation[i].classList.add('win')
+    }
     let uniqueLetters = new Set(currentWordLetters);
     console.log(uniqueLetters.size);
     let totalSelectedLetters = document.getElementsByClassName('selected')
@@ -124,18 +130,18 @@ function endGameAndScore() {
 function scoreDisplayAndStorage() {
     var latestScores = JSON.parse(localStorage.getItem("wordGameSavedHighScores"));
     console.log(latestScores);
-    //initialize scores variable if doesn't already exist in local storage
-    // if (latestScores === null || latestScores === []) {
-    //     latestScores = [['',0]];
-    //     console.log(latestScores)
-    //     localStorage.setItem("wordGameSavedHighScores", JSON.stringify(latestScores));
-    //     //print results to screen
-    //     scoreSection.innerHTML = '<p>Your final score is: ' + score + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label> <input type="text" name="initials" class="initials" maxlength="15"></input><button id="initialSubmit" class="btn btn-outline-secondary">Submit</button>';
-    //     //add event listener for button
-    //     var hsSubmitButton = document.querySelector("#initialSubmit");
-    //     hsSubmitButton.addEventListener("click", logHighScores);
-    // } else {
-        //check to see if top ten scores
+    // initialize scores variable if doesn't already exist in local storage
+    if (latestScores === null || latestScores === []) {
+        latestScores = [['', 0]];
+        console.log(latestScores)
+        localStorage.setItem("wordGameSavedHighScores", JSON.stringify(latestScores));
+        //print results to screen
+        scoreSection.innerHTML = '<p>Your final score is: ' + score + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label> <input type="text" name="initials" class="initials" maxlength="15"></input><button id="initialSubmit" class="btn btn-outline-secondary">Submit</button>';
+        //add event listener for button
+        var hsSubmitButton = document.querySelector("#initialSubmit");
+        hsSubmitButton.addEventListener("click", logHighScores);
+    } else {
+        // check to see if top ten scores
         console.log(latestScores)
         highScoresLength = latestScores.length;
         console.log(highScoresLength)
@@ -148,16 +154,18 @@ function scoreDisplayAndStorage() {
             } else {
                 scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p><button class="playAgain btn btn-outline-secondary">play Again?</button>';
                 let startAgain = document.querySelector(".playAgain");
-                startAgain.addEventListener("click", startGame);
+                startAgain.addEventListener("click", startOver);
             }
         }
     }
-// }
+}
 
 function logHighScores() {
     hsInitials = document.querySelector(".initials").value;
+    console.log(hsInitials)
     var latestScores = JSON.parse(localStorage.getItem("wordGameSavedHighScores"));
     //Make sure no more than 10 entries in latest scores
+    console.log(latestScores)
     console.log(currentGameScore)
     if (latestScores > 10) {
         latestScores.pop();
@@ -168,6 +176,7 @@ function logHighScores() {
         if (currentGameScore >= latestScores[i][1]) {
             if (i === 0) {
                 //add new score to beginning, then add to i to stop loop
+                console.log('newhighscore')
                 latestScores.unshift([hsInitials, currentGameScore]);
                 i = i + highScoresLength;
                 //double check if latest score only has 10 items
@@ -180,6 +189,7 @@ function logHighScores() {
                 latestScores.pop();
                 latestScores.push([hsInitials, currentGameScore]);
             } else {
+                console.log('newmiddlescore')
                 // add new data in the current index
                 latestScores.splice(i, 0, [hsInitials, currentGameScore]);
                 //force for loop to close4
@@ -191,12 +201,41 @@ function logHighScores() {
             }
         }
     }
+    hsInitials.value="";
     //save new high scores
     localStorage.setItem("wordGameSavedHighScores", JSON.stringify(latestScores));
+    buildHighScoresTable();
+}
+
+function buildHighScoresTable() {
+    var latestScores = JSON.parse(localStorage.getItem('wordGameSavedHighScores'));
+    console.log(latestScores)
+    hsTableBody.innerHTML = "";
+    for (let i = 0; i < latestScores.length; i++) {
+        let scoreRow = document.createElement('tr');
+        scoreRow.innerHTML = `<td>${latestScores[i][0]}</td><td>${latestScores[i][1]}</td>`;
+        console.log(scoreRow)
+        hsTableBody.append(scoreRow);
+    }
 }
 
 function startGame() {
+    let prevSelectedLetters = document.querySelectorAll('.selected');
+    console.log(prevSelectedLetters)
+    if (prevSelectedLetters.length !== 0) {
+        for (let i = 0; i < prevSelectedLetters.length; i++) {
+            prevSelectedLetters[i].classList.add('active');
+            prevSelectedLetters[i].classList.remove('selected');
+        }
+        guessLettersParent.innerHTML = "";
+    }
+    console.log('getready')
     populateBlanks.then(listenForLetters());
 }
 
+function startOver (){
+    location.reload();
+}
+
+buildHighScoresTable();
 startGame();

@@ -1,5 +1,7 @@
 /* global */
 
+
+
 /* id */
 #secretWord {
     list-style-type: none;
@@ -8,13 +10,13 @@
 
 /* class */
 .active {
-    color: black
+    color: black;
+    
 }
 
 .selected {
-    color: grey;
+    color: beige;
 }
-
 
 
 .letters {
@@ -31,4 +33,23 @@
     width: 3rem;
     text-align: center;
     height:4rem;
+    animation: append .3s cubic-bezier(0.47, 0, 0.745, 0.715);
+
+}
+
+.win {
+    margin: 0 1.5rem;
+    transform: scale(2);
+}
+
+/* animations */
+@keyframes append {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;	
+	}
 }
