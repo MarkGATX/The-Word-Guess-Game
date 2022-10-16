@@ -1,14 +1,15 @@
 // define global variables
-let wordSelection = ['trust','marry','parlor','failure'];
+let wordSelection = ['trust', 'marry', 'parlor', 'failure'];
 let possibleWords = [];
 let usedWords = [];
 let guessLettersParent = document.querySelector('#secretWord')
 let currentWord = '';
 let currentWordLetters = [];
 let documentBody = document
-let key =''
-puzzleCharacters = [];
-checkWordWin = [];
+let key = ''
+let puzzleCharacters = [];
+let checkWordWin = [];
+let score= 0;
 
 
 //initialize local storage for words and used words
@@ -25,7 +26,7 @@ if (possibleWords === null) {
     localStorage.setItem('usedWordsSaved', JSON.stringify('usedWords'))
 }
 
-const populateBlanks = new Promise(function(resolve,reject) {
+const populateBlanks = new Promise(function (resolve, reject) {
     let randomIndex = Math.floor(Math.random() * wordSelection.length)
     console.log(randomIndex)
     currentWord = possibleWords[randomIndex];
@@ -43,44 +44,57 @@ const populateBlanks = new Promise(function(resolve,reject) {
         console.log(letterLi)
         guessLettersParent.appendChild(letterLi);
         console.log(guessLettersParent)
-    }  
+    }
 });
 
 populateBlanks.then(listenForLetters());
 
 function listenForLetters() {
-    document.addEventListener('keydown', function(event) {
-        key = event.key.toLowerCase();
-        console.log(key)
-        var alphabetCharacters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-          if (alphabetCharacters.includes(key)) {
-            let characterLog = document.querySelector(`[data-letter="${key}"]`)
-            characterLog.classList.remove('active');
-            characterLog.classList.add('selected')
-            // for (var i = 0; i < elements.length; i++) {
-            //   elements[i].textContent += event.key;
-            // }
-            puzzleCharacters = document.querySelectorAll(`[data-puzzle-letter=${key}]`);
-            console.log(puzzleCharacters);
-            if (puzzleCharacters !== null) {
-                console.log(key)
-                for (let i = 0; i< puzzleCharacters.length; i ++) {
-                    puzzleCharacters[i].textContent=key;
-                    puzzleCharacters[i].setAttribute('data-found', 'found')
-                };   
-            };
-          }
-          checkWordWin = document.querySelectorAll(`[data-found=found]`);
-          console.log(checkWordWin)
-          if (checkWordWin.length === currentWordLetters.length) {
-            endGameAndScore();
-          }
-        //   for (i=0;i<checkWordWin.length; i++) {
-        //     if (checkWordWin[i].textContent !== null || checkWordWin[i] !== "") {}
-        //   }
-    });
+    document.addEventListener('keydown', checkKeyValue);
 }
 
-function endGameAndScore(){
-    console.log('ping')
+function checkKeyValue(event) {
+    key = event.key.toLowerCase();
+    console.log(key)
+    document.removeEventListener('keydown', checkKeyValue);
+    var alphabetCharacters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    if (alphabetCharacters.includes(key)) {
+        let characterLog = document.querySelector(`[data-letter="${key}"]`)
+        characterLog.classList.remove('active');
+        characterLog.classList.add('selected')
+        // for (var i = 0; i < elements.length; i++) {
+        //   elements[i].textContent += event.key;
+        // }
+        puzzleCharacters = document.querySelectorAll(`[data-puzzle-letter=${key}]`);
+        console.log(puzzleCharacters);
+        if (puzzleCharacters !== null) {
+            console.log(key)
+            for (let i = 0; i < puzzleCharacters.length; i++) {
+                puzzleCharacters[i].textContent = key;
+                puzzleCharacters[i].setAttribute('data-found', 'found')
+            };
+        };
+    }
+    checkWordWin = document.querySelectorAll(`[data-found=found]`);
+    console.log(checkWordWin)
+    if (checkWordWin.length === currentWordLetters.length) {
+        endGameAndScore();
+        return;
+    }
+    setTimeout(listenForLetters, 500);
+    //   for (i=0;i<checkWordWin.length; i++) {
+    //     if (checkWordWin[i].textContent !== null || checkWordWin[i] !== "") {}
+    //   }
+};
+
+
+function endGameAndScore() {
+    //count number of unique letters in puzzle word
+    let uniqueLetters = new Set(currentWordLetters);
+    console.log(uniqueLetters.size);
+    let totalSelectedLetters = document.getElementsByClassName('selected')
+   //calculate score based on unique letters, letters guessed, and total letters
+    score = Math.round(((uniqueLetters.size/totalSelectedLetters.length)*100) + ((uniqueLetters.size/currentWordLetters.length) * 25));
+    console.log(score)
+
 };
