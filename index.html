@@ -24,6 +24,7 @@
 </header>
 
 <main class="container-fluid">
+    <section class = "letters">
     <div class="container mb-5 pt-3">
         <div class="row d-flex justify-content-center mb-2">
             <section class="letters active col-1 col-md" data-letter="a">a</section>
@@ -65,19 +66,21 @@
     <section class="container d-flex justify-content-center mb-5">
         <div class="row">
             <ul id="secretWord" class="d-flex flex-row justify-content-center">
-
+                <li class="startButton rounded p-3"><h3>Start the Timer!</h3></li>
             </ul>
 
         </div>
     </section>
-    <section class="scores">
-        <div class="row justify-content-center">
+</section>
+    <section class="scores container">
+        <div class="row justify-content-center setHeight">
             <section class="currentScore text-center col-8 lh-3">
 
             </section>
 
         </div>
-        <div class="container highScores justify-content-center col-5">
+        <div class="row highScores justify-content-center col-12 ">
+            <div class="col-4">
             <table class="table table-striped slide">
                 <thead>
                     <tr>
@@ -90,6 +93,11 @@
 
                 </tbody>
             </table>
+            </div>
+            <div class="timer col-4 text-end">
+                <h3>Timer</h3>
+                <p class="timeLeft"></p>
+            </div>
         </div>
     </section>
 

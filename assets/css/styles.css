@@ -39,6 +39,10 @@ html {
     color: black;  
 }
 
+.border-dark {
+
+}
+
 .btn {
     font-family:'Lora', serif;
     background-color:var(--dark);
@@ -52,6 +56,10 @@ html {
 .correct {
     animation: correct 1s cubic-bezier(0.47, 0, 0.745, 0.715);
     color:var(--teal);
+}
+
+.gamePlayContainer {
+    height:42vh;
 }
 
 .headerbg {
@@ -68,6 +76,12 @@ html {
     color: var(--lightTeal);
 }
 
+.startButton {
+    background-color:var(--teal);
+    color:var(--lightTeal);
+    cursor: pointer;
+
+}
 
 .letters {
     /* width:10%; */
@@ -79,7 +93,7 @@ html {
     font-size: 3rem;
     margin: 0 1rem;
     transition: all 1s;
-    /* border-bottom:solid 3px black; */
+    border-bottom:solid 3px var(--dark) !important;
     width: 3rem;
     text-align: center;
     height:4rem;
@@ -87,9 +101,19 @@ html {
 
 }
 
+.setHeight {
+    height:250px;
+}
+
+.timeLeft {
+    font-size:3rem;
+
+}
+
 .win {
     margin: 0 1.5rem;
     transform: scale(2);
+    border-bottom:solid 3px var(--teal) !important;
 }
 
 /* animations */
@@ -97,12 +121,13 @@ html {
 	from {
 		transform: scale(0);
 		opacity: 0;
-        
+   
     
 	}
 	to {
 		transform: scale(1);
 		opacity: 1;	
+
   
 	}
 }

@@ -12,6 +12,10 @@ let checkWordWin = [];
 let currentGameScore = 0;
 let scoreSection = document.querySelector('.currentScore')
 let hsTableBody = document.querySelector('tbody')
+var timerInterval
+var secondsLeft = 30;
+var start = document.querySelector('.startButton')
+var timeLeft = document.querySelector('.timeLeft');
 
 
 //initialize score if needed
@@ -24,10 +28,38 @@ if (latestScores === [] || latestScores === null) {
     localStorage.setItem('wordGameSavedHighScores', JSON.stringify(latestScores));
 }
 
+// // Set the start button
+start.addEventListener("click", startGame);
 
 
-const populateBlanks = new Promise(function (resolve, reject) {
+//The test timer function --- variable declared without var, let, or const is automatically global?!?!?
+function startTimer() {
+    timerInterval = setInterval(function () {
+        if (secondsLeft <= 0) {
+            timeLeft.innerText = 0;
+        } else {
+            timeLeft.innerText = secondsLeft;
+        };
+        if (secondsLeft < 25) {
+            timeLeft.classList.add("red");
+        };
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+            // Stops execution of action at set interval
+            clearInterval(timerInterval);
+            timeLeft.innerText = 0;
+            // Calls function to create and append image
+            currentScore = 0;
+            scoreDisplayAndStorage();
+        }
+    }, 1000);
+    // startGame();
+}
+
+// const = new Promise(function (resolve, reject) 
+function populateBlanks() {
     //initialize local storage for words and used words
+    start.remove();
     possibleWords = JSON.parse(localStorage.getItem('possibleWordsSaved'));
     usedWords = JSON.parse(localStorage.getItem('usedWordsSaved'))
     //if possible word is empty, reset possible and used words
@@ -70,7 +102,9 @@ const populateBlanks = new Promise(function (resolve, reject) {
         guessLettersParent.appendChild(letterLi);
         console.log(guessLettersParent)
     }
-});
+    listenForLetters();
+    startTimer();
+};
 
 
 function listenForLetters() {
@@ -95,9 +129,9 @@ function checkKeyValue(event) {
         if (puzzleCharacters !== null) {
             console.log(key)
             for (let i = 0; i < puzzleCharacters.length; i++) {
-               
+
                 puzzleCharacters[i].setAttribute('data-found', 'found')
-                
+
                 puzzleCharacters[i].textContent = key;
                 puzzleCharacters[i].classList.add('correct');
             };
@@ -106,10 +140,11 @@ function checkKeyValue(event) {
     checkWordWin = document.querySelectorAll(`[data-found=found]`);
     console.log(checkWordWin)
     if (checkWordWin.length === currentWordLetters.length) {
+        clearInterval(timerInterval);
         endGameAndScore();
         return;
     }
-    setTimeout(listenForLetters, 500);
+    setTimeout(listenForLetters, 300);
 };
 
 
@@ -125,7 +160,7 @@ function endGameAndScore() {
     console.log(uniqueLetters.size);
     let totalSelectedLetters = document.getElementsByClassName('selected')
     //calculate score based on unique letters, letters guessed, and total letters
-    currentGameScore = Math.round(((uniqueLetters.size / totalSelectedLetters.length) * 100) + ((uniqueLetters.size / currentWordLetters.length) * 25));
+    currentGameScore = Math.round(((uniqueLetters.size / totalSelectedLetters.length) * 350) + ((uniqueLetters.size / currentWordLetters.length) * 125)+(secondsLeft * 3.5));
     console.log(currentGameScore)
     scoreDisplayAndStorage();
 };
@@ -139,7 +174,7 @@ function scoreDisplayAndStorage() {
         console.log(latestScores)
         localStorage.setItem("wordGameSavedHighScores", JSON.stringify(latestScores));
         //print results to screen
-        scoreSection.innerHTML = '<p>Your final score is: ' + score + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label> <input type="text" name="initials" class="initials" maxlength="15"></input><button id="initialSubmit" class="btn btn-outline-secondary">Submit</button>';
+        scoreSection.innerHTML = '<p class="letters">Your final score is: ' + score + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label> <div class="input-group justify-content-center"><input type="text" name="initials" class="initials" maxlength="15"></input><button id="initialSubmit" class="btn btn-outline-secondary">Submit</button></div>';
         //add event listener for button
         var hsSubmitButton = document.querySelector("#initialSubmit");
         hsSubmitButton.addEventListener("click", logHighScores);
@@ -150,7 +185,7 @@ function scoreDisplayAndStorage() {
         console.log(highScoresLength)
         for (i = 0; i < highScoresLength; i++) {
             if (currentGameScore >= latestScores[i][1]) {
-                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label> <input type="text" name="initials" class="initials" maxlength="15"></input><button class="initialSubmit btn btn-outline-secondary">Submit</button>';
+                scoreSection.innerHTML = '<p>Your final score is: ' + currentGameScore + '.</p> <h2>New High Score!</h2><label for="initials">Enter your initials:</label><div class="input-group justify-content-center"> <input type="text" name="initials" class="initials" maxlength="15"></input><button class="initialSubmit btn btn-outline-secondary">Submit</button></div>';
                 //add event listener for button
                 var hsSubmitButton = document.querySelector(".initialSubmit");
                 hsSubmitButton.addEventListener("click", logHighScores);
@@ -167,6 +202,8 @@ function logHighScores() {
     hsInitials = document.querySelector(".initials").value;
     console.log(hsInitials);
     scoreSection.innerHTML = '<button class="playAgain btn btn-outline-secondary">Play again?</button>';
+    let startAgain = document.querySelector(".playAgain");
+    startAgain.addEventListener("click", startOver);
     var latestScores = JSON.parse(localStorage.getItem("wordGameSavedHighScores"));
     //Make sure no more than 10 entries in latest scores
     console.log(latestScores)
@@ -205,7 +242,7 @@ function logHighScores() {
             }
         }
     }
-    hsInitials.value="";
+    hsInitials.value = "";
     //save new high scores
     localStorage.setItem("wordGameSavedHighScores", JSON.stringify(latestScores));
     buildHighScoresTable();
@@ -218,9 +255,9 @@ function buildHighScoresTable() {
     for (let i = 0; i < latestScores.length; i++) {
         let scoreRow = document.createElement('tr');
         scoreRow.innerHTML = `<td>${latestScores[i][0]}</td><td>${latestScores[i][1]}</td>`;
-        hsTableBody.append(scoreRow);      
+        hsTableBody.append(scoreRow);
     }
-    
+
 }
 
 function startGame() {
@@ -234,12 +271,13 @@ function startGame() {
         guessLettersParent.innerHTML = "";
     }
     console.log('getready')
-    populateBlanks.then(listenForLetters());
+    populateBlanks();
+    // populateBlanks.then(listenForLetters());
 }
 
-function startOver (){
+function startOver() {
     location.reload();
 }
 
 buildHighScoresTable();
-startGame();
+// startGame();
