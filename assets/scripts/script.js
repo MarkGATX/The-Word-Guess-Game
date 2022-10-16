@@ -1,5 +1,5 @@
 // define global variables
-let wordSelection = ['trust', 'marry', 'parlor', 'failure'];
+let wordSelection = ['trust', 'marry', 'parlor', 'failure', 'software','predator','pelican','stream','software','lotion','drawer','speaker','tablet','pillow','mattress','speaker','variable','cartoon','universe','material','cushion','success','tornado','bicycle','monitor','poster','painting','traffic','package','tissue','baggage','shower','breakfast','donkey','kangaroo','gazelle','highway','student','armoir','cabinet','cupboard','pantry','building','castle','juggle','calendar'];
 let possibleWords = [];
 let usedWords = [];
 let guessLettersParent = document.querySelector('#secretWord')
