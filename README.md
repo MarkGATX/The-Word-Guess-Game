@@ -13,7 +13,7 @@ One of my major goals was to try and create this in a Bootstrap framework since 
 
 For now let's go over how to use the app.
 
-[You can see it live here](https://markgatx.github.io/Weather-Dashboard-Full-Stack-Bootcamp/)
+[You can see it live here](https://markgatx.github.io/The-Word-Guess-Game/)
 
 
 ___
