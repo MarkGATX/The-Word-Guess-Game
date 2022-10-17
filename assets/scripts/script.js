@@ -1,5 +1,5 @@
 // define global variables
-let wordSelection = ['trust', 'marry', 'parlor', 'failure', 'software','predator','pelican','stream','software','lotion','drawer','speaker','tablet','pillow','mattress','speaker','variable','cartoon','universe','material','cushion','success','tornado','bicycle','monitor','poster','painting','traffic','package','tissue','baggage','shower','breakfast','donkey','kangaroo','gazelle','highway','student','armoir','cabinet','cupboard','pantry','building','castle','juggle','calendar'];
+let wordSelection = ['trust', 'marry', 'parlor', 'failure', 'software', 'predator', 'pelican', 'stream', 'software', 'lotion', 'drawer', 'speaker', 'tablet', 'pillow', 'mattress', 'speaker', 'variable', 'cartoon', 'universe', 'material', 'cushion', 'success', 'tornado', 'bicycle', 'monitor', 'poster', 'painting', 'traffic', 'package', 'tissue', 'baggage', 'shower', 'breakfast', 'donkey', 'kangaroo', 'gazelle', 'highway', 'student', 'armoir', 'cabinet', 'cupboard', 'pantry', 'building', 'castle', 'juggle', 'calendar'];
 let possibleWords = [];
 let usedWords = [];
 let guessLettersParent = document.querySelector('#secretWord')
@@ -40,7 +40,7 @@ function startTimer() {
         } else {
             timeLeft.innerText = secondsLeft;
         };
-        if (secondsLeft < 25) {
+        if (secondsLeft < 10) {
             timeLeft.classList.add("text-danger");
         };
         secondsLeft--;
@@ -162,7 +162,7 @@ function endGameAndScore() {
     console.log(uniqueLetters.size);
     let totalSelectedLetters = document.getElementsByClassName('selected')
     //calculate score based on unique letters, letters guessed, and total letters
-    currentGameScore = Math.round(((uniqueLetters.size / totalSelectedLetters.length) * 350) + ((uniqueLetters.size / currentWordLetters.length) * 125)+(secondsLeft * 3.5));
+    currentGameScore = Math.round(((uniqueLetters.size / totalSelectedLetters.length) * 250) + ((uniqueLetters.size / currentWordLetters.length) * 125) + (secondsLeft * 3.5));
     console.log(currentGameScore)
     scoreDisplayAndStorage();
 };
