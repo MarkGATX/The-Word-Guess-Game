@@ -177,8 +177,12 @@ function endGameAndScore() {
     let topLoc = (definitionTargetData.top + window.scrollY + 200) + "px";
     definitionPane.style.top = topLoc;
     definitionPane.classList.remove('hide')
-    definitionTarget.classList.add('blur');
-    definitionPane.classList.add('see');
+    
+    setTimeout(() => {definitionTarget.classList.add('blur');
+        
+    }, 1200);
+    setTimeout(() => {definitionPane.classList.add('see');},1500)
+    
     scoreDisplayAndStorage();
 };
 
@@ -315,7 +319,7 @@ function fetchDefinition() {
             if (phonetic === undefined || phonetic === null) {
                 phonetic ="";
             }
-            meaningEl.innerHTML = `<h2>${currentWord}</h2> <h3>${phonetic}</h3><hr><p><strong>${data[0].meanings[0].partOfSpeech}</strong></p><p>${data[0].meanings[0].definitions[0].definition}</p>`;
+            meaningEl.innerHTML = `<h2>${currentWord}</h2> <h3>${phonetic}</h3><hr><p><strong>${data[0].meanings[0].partOfSpeech}</strong></p><p style="font-style:italic">${data[0].meanings[0].definitions[0].definition}</p>`;
             defContainer.append(meaningEl);
         })
 
