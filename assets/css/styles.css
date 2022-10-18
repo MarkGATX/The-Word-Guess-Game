@@ -29,6 +29,12 @@ html {
 
 
 /* id */
+#definition {
+    background-color:rgba(219, 219, 219, 0.5);
+    /* filter: blur(1rem); */
+    height:30%;
+}
+
 #secretWord {
     font-family: 'Anonymous Pro', monospace;
     list-style-type: none;
@@ -40,7 +46,6 @@ html {
     color: black;
 }
 
-.border-dark {}
 
 .btn {
     font-family: 'Lora', serif;
@@ -85,7 +90,8 @@ html {
 .letters {
     /* width:10%; */
     flex-grow: 0;
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    transition: all 1s;
 }
 
 .gameLetters {

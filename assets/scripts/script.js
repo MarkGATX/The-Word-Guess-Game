@@ -164,6 +164,17 @@ function endGameAndScore() {
     //calculate score based on unique letters, letters guessed, and total letters
     currentGameScore = Math.round(((uniqueLetters.size / totalSelectedLetters.length) * 250) + ((uniqueLetters.size / currentWordLetters.length) * 125) + (secondsLeft * 3.5));
     console.log(currentGameScore)
+    let definitionTarget = document.querySelector('.letters');
+    console.log(definitionTarget)
+    let definitionTargetData = definitionTarget.getBoundingClientRect();
+    console.log(definitionTargetData)
+    console.log(definitionTargetData.top + window.scrollY);
+    let definitionPane = document.querySelector('#definition');
+    console.log(definitionPane)
+    console.log(definitionTargetData.top)
+    let topLoc = (definitionTargetData.top + window.scrollY +200) + "px";
+    definitionPane.style.top = topLoc;
+    definitionPane.classList.remove('hide')
     scoreDisplayAndStorage();
 };
 
