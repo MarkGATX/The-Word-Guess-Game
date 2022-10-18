@@ -1,5 +1,5 @@
 // define global variables
-let wordSelection = ['trust', 'marry', 'parlor', 'failure', 'software', 'predator', 'pelican', 'stream', 'software', 'lotion', 'drawer', 'speaker', 'tablet', 'pillow', 'mattress', 'speaker', 'variable', 'cartoon', 'universe', 'material', 'cushion', 'success', 'tornado', 'bicycle', 'monitor', 'poster', 'painting', 'traffic', 'package', 'tissue', 'baggage', 'shower', 'breakfast', 'donkey', 'kangaroo', 'gazelle', 'highway', 'student', 'armoir', 'cabinet', 'cupboard', 'pantry', 'building', 'castle', 'juggle', 'calendar'];
+let wordSelection = ['trust', 'marry', 'parlor', 'failure', 'software', 'predator', 'pelican', 'stream', 'software', 'lotion', 'drawer', 'speaker', 'tablet', 'pillow', 'mattress', 'speaker', 'variable', 'cartoon', 'universe', 'material', 'cushion', 'success', 'tornado', 'bicycle', 'monitor', 'poster', 'painting', 'traffic', 'package', 'tissue', 'baggage', 'shower', 'breakfast', 'donkey', 'kangaroo', 'gazelle', 'highway', 'student', 'armoire', 'cabinet', 'cupboard', 'pantry', 'building', 'castle', 'juggle', 'calendar'];
 let possibleWords = [];
 let usedWords = [];
 let guessLettersParent = document.querySelector('#secretWord')
@@ -84,6 +84,8 @@ function populateBlanks() {
     console.log(possibleWords)
     usedWords.push(currentWord);
     console.log(usedWords)
+    //send to dictionary api to get definition
+    fetchDefinition();
     localStorage.setItem('possibleWordsSaved', JSON.stringify(possibleWords));
     localStorage.setItem('usedWordsSaved', JSON.stringify(usedWords));
     console.log(currentWord)
@@ -172,9 +174,11 @@ function endGameAndScore() {
     let definitionPane = document.querySelector('#definition');
     console.log(definitionPane)
     console.log(definitionTargetData.top)
-    let topLoc = (definitionTargetData.top + window.scrollY +200) + "px";
+    let topLoc = (definitionTargetData.top + window.scrollY + 200) + "px";
     definitionPane.style.top = topLoc;
     definitionPane.classList.remove('hide')
+    definitionTarget.classList.add('blur');
+    definitionPane.classList.add('see');
     scoreDisplayAndStorage();
 };
 
@@ -290,6 +294,32 @@ function startGame() {
 
 function startOver() {
     location.reload();
+}
+
+function fetchDefinition() {
+    console.log('ping')
+    let dictionaryApi = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentWord}`;
+    fetch(dictionaryApi)
+        .then(function (response) {
+            console.log('ping2')
+            return response.json();
+        })
+        .then(function (data) {
+            console.log('ping3')
+            console.log(data)
+            let meaningEl = document.createElement('div');
+            let defContainer = document.querySelector('.defContain')
+            defContainer.innerHTML = '';
+            meaningEl.classList.add('wordDef', 'col-8')
+            let phonetic = data[0].phonetic;
+            if (phonetic === undefined || phonetic === null) {
+                phonetic ="";
+            }
+            meaningEl.innerHTML = `<h2>${currentWord}</h2> <h3>${phonetic}</h3><hr><p><strong>${data[0].meanings[0].partOfSpeech}</strong></p><p>${data[0].meanings[0].definitions[0].definition}</p>`;
+            defContainer.append(meaningEl);
+        })
+
+
 }
 
 buildHighScoresTable();

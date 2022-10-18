@@ -30,9 +30,10 @@ html {
 
 /* id */
 #definition {
-    background-color:rgba(219, 219, 219, 0.5);
-    /* filter: blur(1rem); */
+    background-color:rgba(238, 208, 182, 0.8);
     height:30%;
+    opacity:0;
+    transition:all 4s;
 }
 
 #secretWord {
@@ -44,6 +45,10 @@ html {
 /* class */
 .active {
     color: black;
+}
+
+.blur {
+    filter: blur(.5rem) !important;
 }
 
 
@@ -62,6 +67,30 @@ html {
     color: var(--teal);
 }
 
+.defContain {
+    font-family: 'Lora', serif;
+}
+
+.defContain h2 {
+    display:inline;
+    font-size:5rem;
+}
+
+.defContain h3 {
+    display:inline;
+    
+}
+
+.defContain hr {
+    margin:.5rem;
+    border-top: 4px solid var(--dark);
+}
+
+.defContain p {
+    margin-bottom:.25rem;
+    font-size:1.2rem;
+}
+
 .gamePlayContainer {
     height: 42vh;
 }
@@ -74,6 +103,10 @@ html {
 .scoreRow {
     overflow-x: hidden;
 
+}
+
+.see {
+    opacity:1 !important;
 }
 
 .selected {
@@ -91,7 +124,8 @@ html {
     /* width:10%; */
     flex-grow: 0;
     font-size: 1.5rem;
-    transition: all 1s;
+    transition: all 4s;
+    filter:none;
 }
 
 .gameLetters {
